@@ -10,13 +10,13 @@ import java.util.HashSet;
  * @param <T>
  */
 public class Graph<T> {
-    private final HashSet<Vertex> vertices;
+    private final ArrayList<Vertex> vertices;
     private final HashMap<Vertex, ArrayList<Vertex>> adjList;
 
     private int nbVertex = 0;
 
     public Graph() {
-        this.vertices = new HashSet<Vertex>();
+        this.vertices = new ArrayList<>();
         this.adjList = new HashMap<Vertex, ArrayList<Vertex>>();
     }
 
@@ -64,6 +64,14 @@ public class Graph<T> {
         return this.adjList.get(key).contains(vertex) || this.adjList.get(vertex).contains(key);
     }
 
+    public Vertex getVertex(int i) {
+        return this.vertices.get(i);
+    }
+
+    public int getNbVertex() {
+        return nbVertex;
+    }
+
     /**
      *
      */
@@ -76,6 +84,8 @@ public class Graph<T> {
 
         private float heuristic;
 
+        private Vertex prev;
+
         private Vertex(T data) {
             this.data = data;
             this.heuristic = 0.f;
@@ -83,6 +93,7 @@ public class Graph<T> {
             this.adjList = new HashSet<Edge>();
 
             this.id = nbVertex;
+            this.prev = null;
         }
 
         /**
@@ -94,8 +105,16 @@ public class Graph<T> {
             return data;
         }
 
+        public int getId() {
+            return id;
+        }
+
         public float getHeuristic() {
             return heuristic;
+        }
+
+        public Vertex getPrev() {
+            return prev;
         }
     }
 
