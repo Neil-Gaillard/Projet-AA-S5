@@ -42,6 +42,6 @@ public enum Case {
 
     @Override
     public String toString() {
-        return String.valueOf(this.getValue());
+        return String.valueOf(this.value);
     }
 }

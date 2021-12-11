@@ -185,13 +185,7 @@ public class Labyrinthe {
                             return false;
             if (movePrisoner())
                 return true;
-            for (int i = 0; i < this.sizeY; ++i) {
-                for (int j = 0; j < this.sizeX; ++j) {
-                    System.out.println(this.map[i][j].getValue());
-                }
-                System.out.println(System.lineSeparator());
-            }
-            System.out.println(System.lineSeparator());
+            System.out.println(this);
             turn++;
         }
         return false;
@@ -199,5 +193,17 @@ public class Labyrinthe {
 
     public void setValue(int x, int y, Case value) {
         this.map[x][y] = value;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder s = new StringBuilder();
+        for (int i = 0; i < this.sizeY; ++i) {
+            for (int j = 0; j < this.sizeX; ++j) {
+                s.append(this.map[i][j].toString());
+            }
+            s.append(System.lineSeparator());
+        }
+        return s.toString();
     }
 }

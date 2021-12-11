@@ -23,7 +23,11 @@ public class Application {
                     labyrinthe.setValue(j, k, entree[k]);
                 }
             }
-            System.out.println(labyrinthe.runInstance());
+            System.out.println(labyrinthe);
+            if (labyrinthe.runInstance())
+                System.out.println('Y');
+            else
+                System.out.println('N');
         }
     }
 }
