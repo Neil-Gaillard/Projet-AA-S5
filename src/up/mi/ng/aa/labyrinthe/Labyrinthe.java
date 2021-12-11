@@ -57,17 +57,12 @@ public class Labyrinthe {
      * @return vrai si le mouvement est possible, faux sinon
      */
     private boolean canMoveDir(int x, int y, Direction dir) {
-        switch (dir) {
-            case UP:
-                return y != 0 && this.map[y - 1][x] == Case.LIBRE;
-            case DOWN:
-                return y != this.sizeY - 1 && this.map[y + 1][x] == Case.LIBRE;
-            case LEFT:
-                return x != 0 && this.map[y][x - 1] == Case.LIBRE;
-            case RIGHT:
-                return x != this.sizeX - 1 && this.map[y][x + 1] == Case.LIBRE;
-        }
-        return false;
+        return switch (dir) {
+            case UP -> y != 0 && this.map[y - 1][x] == Case.LIBRE;
+            case DOWN -> y != this.sizeY - 1 && this.map[y + 1][x] == Case.LIBRE;
+            case LEFT -> x != 0 && this.map[y][x - 1] == Case.LIBRE;
+            case RIGHT -> x != this.sizeX - 1 && this.map[y][x + 1] == Case.LIBRE;
+        };
     }
 
     /**

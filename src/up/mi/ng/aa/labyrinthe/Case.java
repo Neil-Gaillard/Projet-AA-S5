@@ -15,29 +15,17 @@ public enum Case {
         this.value = value;
     }
 
-    public char getValue() {
-        return value;
-    }
-
     public static Case getValueFromChar(char ch) {
-        switch (ch) {
-            case '.':
-                return LIBRE;
-            case '#':
-                return MUR;
-            case 'F':
-                return FEU;
-            case 'D':
-                return DEBUT;
-            case 'S':
-                return SORTIE;
-            case 'A':
-                return FLAMMESPROPAGEES;
-            case 'L':
-                return DEJAPARCOURU;
-            default:
-                return null;
-        }
+        return switch (ch) {
+            case '.' -> LIBRE;
+            case '#' -> MUR;
+            case 'F' -> FEU;
+            case 'D' -> DEBUT;
+            case 'S' -> SORTIE;
+            case 'A' -> FLAMMESPROPAGEES;
+            case 'L' -> DEJAPARCOURU;
+            default -> null;
+        };
     }
 
     @Override

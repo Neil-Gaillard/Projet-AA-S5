@@ -1,33 +1,41 @@
 package up.mi.ng.aa.appli;
 
 import up.mi.ng.aa.labyrinthe.Case;
-import up.mi.ng.aa.labyrinthe.Labyrinthe;
 
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Arrays;
 
 public class Application {
     public static void main(String[] args) {
-        int N_INSTANCES;
-        Scanner sc = new Scanner(System.in);
-        N_INSTANCES = sc.nextInt();
-        for (int i = 0; i < N_INSTANCES; ++i) {
-            int sizeY = sc.nextInt();
-            int sizeX = sc.nextInt();
-            sc.nextLine();
-            Labyrinthe labyrinthe = new Labyrinthe(sizeX, sizeY);
-            for (int j = 0; j < sizeY; ++j) {
-                Case[] entree = new Case[sizeX];
-                String input = sc.nextLine();
-                for (int k = 0; k < sizeX; ++k) {
-                    entree[k] = Case.getValueFromChar(input.charAt(k));
-                    labyrinthe.setValue(j, k, entree[k]);
+        File file = new File("N:\\Projet-AA-S5\\src\\up\\mi\\ng\\aa\\lab.txt");
+
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+            String data = bufferedReader.readLine();
+            final int NBINSTANCES = Integer.parseInt(data);
+            for (int k = 0; k < NBINSTANCES; ++k) {
+                data = bufferedReader.readLine();
+
+                int nlines = Integer.parseInt(data.split(" ")[0]);
+                int ncols = Integer.parseInt(data.split(" ")[1]);
+
+                Case[][] testTableau = new Case[nlines][ncols];
+
+                for (int i = 0; i < nlines; ++i) {
+                    data = bufferedReader.readLine();
+                    for (int j = 0; j < ncols; ++j) {
+                        testTableau[i][j] = Case.getValueFromChar(data.charAt(j));
+                    }
                 }
+                System.out.println(Arrays.deepToString(testTableau));
             }
-            System.out.println(labyrinthe);
-            if (labyrinthe.runInstance())
-                System.out.println('Y');
-            else
-                System.out.println('N');
+
+            bufferedReader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
