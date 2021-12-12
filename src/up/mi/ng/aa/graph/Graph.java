@@ -1,8 +1,6 @@
 package up.mi.ng.aa.graph;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 
 /**
  * Classe représentant un graphe et ses différents composants
@@ -11,13 +9,11 @@ import java.util.HashSet;
  */
 public class Graph<T> {
     private final ArrayList<Vertex> vertices;
-    private final HashMap<Vertex, ArrayList<Vertex>> adjList;
 
     private int nbVertex = 0;
 
     public Graph() {
         this.vertices = new ArrayList<>();
-        this.adjList = new HashMap<Vertex, ArrayList<Vertex>>();
     }
 
     /**
@@ -28,40 +24,17 @@ public class Graph<T> {
     public void addVertex(T data) {
         Vertex v = new Vertex(data);
         this.vertices.add(v);
-        this.adjList.put(v, new ArrayList<Vertex>());
         ++this.nbVertex;
     }
 
     /**
      * Adds an edge between two vertices (in both ways)
      *
-     * @param key    The vertex from where the edge starts
-     * @param vertex The vertex from where the edge ends
+     * @param dest   The vertex from where the edge ends
+     * @param weight The weight of the edge
      */
-    public void addEdge(Vertex key, Vertex vertex) {
-        this.adjList.get(key).add(vertex);
-        this.adjList.get(vertex).add(key);
-
-        key.adjList.add(new Edge(key, vertex));
-        vertex.adjList.add(new Edge(vertex, key));
-    }
-
-    public void addEdge(Vertex key, Vertex vertex, float weight) {
-        this.adjList.get(key).add(vertex);
-        this.adjList.get(vertex).add(key);
-
-        key.adjList.add(new Edge(key, vertex, weight));
-        vertex.adjList.add(new Edge(vertex, key, weight));
-    }
-
-    /**
-     * Checks if two vertices are adjacent
-     *
-     * @param key    The vertex from where the edge starts
-     * @param vertex The vertex from where the edge ends
-     */
-    public boolean areAdjacent(Vertex key, Vertex vertex) {
-        return this.adjList.get(key).contains(vertex) || this.adjList.get(vertex).contains(key);
+    public void addEdge(int source, int dest, float weight) {
+        this.vertices.get(source).getAdjList().add(new Edge(dest, weight));
     }
 
     public Vertex getVertex(int i) {
@@ -78,10 +51,11 @@ public class Graph<T> {
     public class Vertex {
         private final T data;
 
-        private final HashSet<Edge> adjList;
+        private final ArrayList<Edge> adjList;
 
-        private int id;
+        private final int id;
 
+        private float timeFromSource;
         private float heuristic;
 
         private Vertex prev;
@@ -90,10 +64,12 @@ public class Graph<T> {
             this.data = data;
             this.heuristic = 0.f;
 
-            this.adjList = new HashSet<Edge>();
+            this.adjList = new ArrayList<Edge>();
 
             this.id = nbVertex;
             this.prev = null;
+
+            this.timeFromSource = Float.POSITIVE_INFINITY;
         }
 
         /**
@@ -109,12 +85,32 @@ public class Graph<T> {
             return id;
         }
 
+        public float getTimeFromSource() {
+            return timeFromSource;
+        }
+
+        public void setTimeFromSource(float timeFromSource) {
+            this.timeFromSource = timeFromSource;
+        }
+
         public float getHeuristic() {
             return heuristic;
         }
 
+        public void setHeuristic(float heuristic) {
+            this.heuristic = heuristic;
+        }
+
         public Vertex getPrev() {
             return prev;
+        }
+
+        public void setPrev(Vertex prev) {
+            this.prev = prev;
+        }
+
+        public ArrayList<Edge> getAdjList() {
+            return adjList;
         }
     }
 
@@ -122,31 +118,21 @@ public class Graph<T> {
      *
      */
     public class Edge {
-        private Vertex firstVertex;
-        private Vertex secondVertex;
+        private final Vertex destination;
 
-        private float weight;
+        private final float weight;
 
-        private Edge(Vertex firstVertex, Vertex secondVertex, float weight) {
-            this.firstVertex = firstVertex;
-            this.secondVertex = secondVertex;
+        private Edge(int destination, float weight) {
+            this.destination = vertices.get(destination);
             this.weight = weight;
-        }
-
-        private Edge(Vertex firstVertex, Vertex secondVertex) {
-            this(firstVertex, secondVertex, 0.f);
         }
 
         public float getWeight() {
             return weight;
         }
 
-        public Vertex getFirstVertex() {
-            return firstVertex;
-        }
-
-        public Vertex getSecondVertex() {
-            return secondVertex;
+        public Vertex getDestination() {
+            return destination;
         }
     }
 }

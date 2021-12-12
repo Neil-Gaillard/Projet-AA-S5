@@ -5,20 +5,80 @@ import up.mi.ng.aa.graph.Graph;
 import up.mi.ng.aa.labyrinthe.Case;
 
 import javax.swing.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 
 public class Application {
+
     private static void drawBoard(Board board, int nlines, int ncols, int pixelSize) {
         JFrame window = new JFrame("Plus court chemin");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setBounds(0, 0, ncols * pixelSize + 20, nlines * pixelSize + 40);
         window.getContentPane().add(board);
         window.setVisible(true);
+    }
+
+    private static float chebyshevDistance(int x1, int y1, int x2, int y2) {
+        return Math.max(Math.abs(y2 - y1), Math.abs(x2 - x1));
+    }
+
+    /**
+     * Algorithme A*
+     *
+     * @param graph le graphe représentant la carte
+     * @param start un entier représentant la case de départ
+     *              (entier unique correspondant à la case obtenue dans le sens de la lecture)
+     * @param end   un entier représentant la case d'arrivée
+     *              (entier unique correspondant à la case obtenue dans le sens de la lecture)
+     * @param ncols le nombre de colonnes dans la carte
+     * @param board l'affichage
+     * @return une liste d'entiers correspondant au chemin
+     */
+    private static LinkedList<Integer> AStar(Graph<Case> graph, int start, int end, int ncols, Board board) {
+        HashSet<Integer> toVisit = new HashSet<Integer>();
+        for (int i = 0; i < graph.getNbVertex(); ++i)
+            toVisit.add(graph.getVertex(i).getId());
+        graph.getVertex(start).setTimeFromSource(0.f);
+
+        for (int i = 0; i < graph.getNbVertex(); ++i)
+            graph.getVertex(i).setHeuristic(Application.chebyshevDistance(i % ncols, i / ncols, end % ncols, end / ncols));
+
+        while (toVisit.contains(end)) {
+            float costSoFar = Float.POSITIVE_INFINITY;
+            int current = -1;
+            for (Integer i : toVisit) {
+                if (graph.getVertex(i).getTimeFromSource() + graph.getVertex(i).getHeuristic() <= costSoFar) {
+                    costSoFar = graph.getVertex(i).getTimeFromSource();
+                    current = graph.getVertex(i).getId();
+                }
+            }
+
+            toVisit.remove(current);
+
+            for (int i = 0; i < graph.getVertex(current).getAdjList().size(); i++) {
+                int to_try = graph.getVertex(current).getAdjList().get(i).getDestination().getId();
+                if (graph.getVertex(to_try).getTimeFromSource() > (costSoFar + graph.getVertex(current).getAdjList().get(i).getWeight())) {
+                    graph.getVertex(to_try).setTimeFromSource(costSoFar + graph.getVertex(current).getAdjList().get(i).getWeight());
+                    graph.getVertex(to_try).setPrev(graph.getVertex(current));
+                }
+            }
+            board.update(graph, current);
+        }
+
+        LinkedList<Integer> path = new LinkedList<Integer>();
+        while (!path.contains(start)) {
+            path.addFirst(end);
+            if (graph.getVertex(end).getId() != graph.getVertex(start).getId())
+                if (graph.getVertex(end).getPrev() != null)
+                    end = graph.getVertex(end).getPrev().getId();
+        }
+        path.addFirst(start);
+
+        board.addPath(graph, path);
+        return path;
     }
 
     public static void main(String[] args) {
@@ -72,26 +132,50 @@ public class Application {
                                 dest = (line - 1) * ncols + col - 1;
                                 weight = (graph.getVertex(source).getData().getTime() +
                                         graph.getVertex(dest).getData().getTime()) / 2.f;
-                                graph.addEdge(graph.getVertex(source), graph.getVertex(dest), weight);
+                                graph.addEdge(source, dest, weight);
+                                graph.addEdge(dest, source, weight);
                             }
                             dest = (line - 1) * ncols + col;
                             weight = (graph.getVertex(source).getData().getTime() +
                                     graph.getVertex(source).getData().getTime()) / 2.f;
-                            graph.addEdge(graph.getVertex(source), graph.getVertex(dest), weight);
+                            graph.addEdge(source, dest, weight);
+                            graph.addEdge(dest, source, weight);
                         }
                         if (col > 0) {
                             dest = (line) * ncols + col - 1;
                             weight = (graph.getVertex(source).getData().getTime() +
                                     graph.getVertex(dest).getData().getTime()) / 2.f;
-                            graph.addEdge(graph.getVertex(source), graph.getVertex(dest), weight);
+                            graph.addEdge(source, dest, weight);
+                            graph.addEdge(dest, source, weight);
                         }
                     }
                 }
 
-                int pixelSize = 30;
+                int pixelSize = 40;
                 Board board = new Board(graph, pixelSize, ncols, nlines, groundColor, startV, endV);
                 drawBoard(board, nlines, ncols, pixelSize);
                 board.repaint();
+
+                LinkedList<Integer> path = AStar(graph, startV, endV, ncols, board);
+
+                try {
+                    File fil1 = new File("N:\\out.txt");
+                    if (!fil1.exists()) {
+                        if (!fil1.createNewFile())
+                            throw new IOException("Could not create the file");
+                    }
+                    FileWriter fw = new FileWriter(fil1.getAbsoluteFile());
+                    BufferedWriter bw = new BufferedWriter(fw);
+
+                    for (int i : path) {
+                        bw.write(String.valueOf(i));
+                        bw.write('\n');
+                    }
+                    bw.close();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
                 System.out.println(Arrays.deepToString(testTableau));
             }
