@@ -6,7 +6,6 @@ import up.mi.ng.aa.labyrinthe.Case;
 
 import javax.swing.*;
 import java.io.*;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -82,9 +81,9 @@ public class Application {
     }
 
     public static void main(String[] args) {
-        File file = new File("N:\\Projet-AA-S5\\src\\up\\mi\\ng\\aa\\lab.txt");
+        File fileIn = new File("up\\mi\\ng\\aa\\lab.txt");
         try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(fileIn));
             String data = bufferedReader.readLine();
             final int NBINSTANCES = Integer.parseInt(data);
             for (int k = 0; k < NBINSTANCES; ++k) {
@@ -159,12 +158,12 @@ public class Application {
                 LinkedList<Integer> path = AStar(graph, startV, endV, ncols, board);
 
                 try {
-                    File fil1 = new File("N:\\out.txt");
-                    if (!fil1.exists()) {
-                        if (!fil1.createNewFile())
-                            throw new IOException("Could not create the file");
+                    File fileOut = new File("N:\\out.txt");
+                    if (!fileOut.exists()) {
+                        if (!fileOut.createNewFile())
+                            throw new IOException("Could not create the fileIn");
                     }
-                    FileWriter fw = new FileWriter(fil1.getAbsoluteFile());
+                    FileWriter fw = new FileWriter(fileOut.getAbsoluteFile());
                     BufferedWriter bw = new BufferedWriter(fw);
 
                     for (int i : path) {
@@ -177,7 +176,11 @@ public class Application {
                     e.printStackTrace();
                 }
 
-                System.out.println(Arrays.deepToString(testTableau));
+                //TODO Lire le chemin, placer dans un tableau
+                //TODO Chaque indice, avancer le feu
+                //TODO Si le feu se touche une case que le héros doit parcourir dans le futur / la case ou il est alors
+                //TODO il a pas perdu
+                //TODO Sinon le héros peut accédère à la fin avant le feu
             }
             bufferedReader.close();
         } catch (IOException e) {
