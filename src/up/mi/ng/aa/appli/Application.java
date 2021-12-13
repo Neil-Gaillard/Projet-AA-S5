@@ -82,20 +82,22 @@ public class Application {
 
     public static void main(String[] args) {
         File fileIn = new File("up\\mi\\ng\\aa\\lab.txt");
+
+        final HashMap<Case, String> groundColor = new HashMap<Case, String>();
+        groundColor.put(Case.DEBUT, Case.DEBUT.getColor());
+        groundColor.put(Case.SORTIE, Case.SORTIE.getColor());
+        groundColor.put(Case.LIBRE, Case.LIBRE.getColor());
+        groundColor.put(Case.FLAMMESPROPAGEES, Case.FLAMMESPROPAGEES.getColor());
+        groundColor.put(Case.FEU, Case.FEU.getColor());
+        groundColor.put(Case.MUR, Case.MUR.getColor());
+        groundColor.put(Case.DEJAPARCOURU, Case.DEJAPARCOURU.getColor());
+
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(fileIn));
             String data = bufferedReader.readLine();
             final int NBINSTANCES = Integer.parseInt(data);
             for (int k = 0; k < NBINSTANCES; ++k) {
 
-                HashMap<Case, String> groundColor = new HashMap<Case, String>();
-                groundColor.put(Case.DEBUT, Case.DEBUT.getColor());
-                groundColor.put(Case.SORTIE, Case.SORTIE.getColor());
-                groundColor.put(Case.LIBRE, Case.LIBRE.getColor());
-                groundColor.put(Case.FLAMMESPROPAGEES, Case.FLAMMESPROPAGEES.getColor());
-                groundColor.put(Case.FEU, Case.FEU.getColor());
-                groundColor.put(Case.MUR, Case.MUR.getColor());
-                groundColor.put(Case.DEJAPARCOURU, Case.DEJAPARCOURU.getColor());
 
                 data = bufferedReader.readLine();
                 int nlines = Integer.parseInt(data.split(" ")[0]);
@@ -104,14 +106,12 @@ public class Application {
                 int startV = 0;
                 int endV = 0;
 
-                Case[][] testTableau = new Case[nlines][ncols];
                 Graph<Case> graph = new Graph<Case>();
 
                 //Ajout des sommets
                 for (int i = 0; i < nlines; ++i) {
                     data = bufferedReader.readLine();
                     for (int j = 0; j < ncols; ++j) {
-                        testTableau[i][j] = Case.getValueFromChar(data.charAt(j));
                         graph.addVertex(Case.getValueFromChar(data.charAt(j)));
                         if (Case.getValueFromChar(data.charAt(j)) == Case.DEBUT)
                             startV = i * ncols + j;
