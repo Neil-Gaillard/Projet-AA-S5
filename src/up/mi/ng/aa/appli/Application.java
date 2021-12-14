@@ -81,7 +81,7 @@ public class Application {
     }
 
     public static void main(String[] args) {
-        File fileIn = new File("up\\mi\\ng\\aa\\lab.txt");
+        File fileIn = new File("src/up/mi/ng/aa/lab.txt");
 
         final HashMap<Case, String> groundColor = new HashMap<Case, String>();
         groundColor.put(Case.DEBUT, Case.DEBUT.getColor());
@@ -158,7 +158,7 @@ public class Application {
                 LinkedList<Integer> path = AStar(graph, startV, endV, ncols, board);
 
                 try {
-                    File fileOut = new File("N:\\out.txt");
+                    File fileOut = new File("src/up/mi/ng/aa/out.txt");
                     if (!fileOut.exists()) {
                         if (!fileOut.createNewFile())
                             throw new IOException("Could not create the fileIn");
