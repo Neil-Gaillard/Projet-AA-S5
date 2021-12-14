@@ -176,11 +176,18 @@ public class Application {
                     e.printStackTrace();
                 }
 
-                //TODO Lire le chemin, placer dans un tableau
-                //TODO Chaque indice, avancer le feu
-                //TODO Si le feu se touche une case que le héros doit parcourir dans le futur / la case ou il est alors
-                //TODO il a pas perdu
-                //TODO Sinon le héros peut accédère à la fin avant le feu
+                for (int i = 0; i < path.size(); ++i) {
+                    //TODO Chaque indice, avancer le feu
+                    for (int j = 0; j < graph.getNbVertex(); ++j) {
+                        if (graph.getVertex(j).getData() == Case.FEU) {
+                            if (j % ncols != 1)
+                                graph.getVertex()
+                        }
+                    }
+                    //TODO Si le feu se touche une case que le héros doit parcourir dans le futur / la case ou il est alors
+                    //TODO il a pas perdu
+                    //TODO Sinon le héros peut accédère à la fin avant le feu
+                }
             }
             bufferedReader.close();
         } catch (IOException e) {
