@@ -5,7 +5,10 @@ import up.mi.ng.aa.graph.Graph;
 import up.mi.ng.aa.labyrinthe.Case;
 
 import javax.swing.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -176,20 +179,6 @@ public class Application {
                 board.repaint();
 
                 LinkedList<Integer> path = AStar(graph, startV, endV, ncols, board);
-
-                File fileOut = new File("src/up/mi/ng/aa/out.txt");
-                if (!fileOut.exists()) {
-                    if (!fileOut.createNewFile())
-                        throw new IOException("Could not create the fileIn");
-                }
-                FileWriter fw = new FileWriter(fileOut.getAbsoluteFile());
-                BufferedWriter bw = new BufferedWriter(fw);
-
-                for (int i : path) {
-                    bw.write(String.valueOf(i));
-                    bw.write('\n');
-                }
-                bw.close();
 
                 boolean escaped = true;
                 if (!path.isEmpty()) {
