@@ -36,6 +36,17 @@ public class Board extends JComponent {
     private int current;
     private LinkedList<Integer> path;
 
+    /**
+     * Construit un Graph(Case) sous forme de tableau à afficher
+     *
+     * @param graph     le graph à afficher
+     * @param pixelSize la taille en pixel pour chaque somemt du graph
+     * @param ncols     le nombre de colonnes du graph
+     * @param nlines    le nombre de lignes du graph
+     * @param colors    hashmap représentant la couleur définie pour chaque type de sommet
+     * @param start     sommet défini en tant que sommet de départ à mettre en évidence
+     * @param end       somemt défini en tant que sommet d'arrivée à mettre en évidence
+     */
     public Board(Graph<Case> graph, int pixelSize, int ncols, int nlines, HashMap<Case, String> colors, int start, int end) {
         super();
         this.graph = graph;
@@ -50,7 +61,11 @@ public class Board extends JComponent {
         this.path = null;
     }
 
-    //Mise à jour de l'affichage
+    /**
+     * Met à jour l'affichage
+     *
+     * @param g objet Graphics
+     */
     public void paint(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
