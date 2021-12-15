@@ -10,8 +10,24 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 
+/**
+ * Projet Labyrinthe
+ * Algorithmie Avancée - S’échapper d’Ayutthaya
+ *
+ * @author Neil GAILLARD
+ * @version 1.0
+ */
 public class Application {
 
+    /**
+     * Méthode statique permettant de déclarer une fenêtre dans laquelle le graph sera affiché sous forme de carte
+     *
+     * @param board     le tableau à afficher sur l'écran
+     * @param nlines    le nombre de lignes du tableau à afficher sur l'écran
+     * @param ncols     le nombre de colonnes du tableau à afficher sur l'écran
+     * @param pixelSize la taille en pixel d'une cellule du tableau à afficher sur l'écran
+     * @author Proviens du TP Partie B (Algorithmie Avancée)
+     */
     private static void drawBoard(Board board, int nlines, int ncols, int pixelSize) {
         JFrame window = new JFrame("Plus court chemin");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -20,12 +36,21 @@ public class Application {
         window.setVisible(true);
     }
 
+    /**
+     * Méthode permettant de calculer la distance Chebyshevienne entre deux points
+     *
+     * @param x1 la composante x du point de départ
+     * @param y1 la composante y du point de départ
+     * @param x2 la composante x du point d'arrivée
+     * @param y2 la composante y du point d'arrivée
+     * @return la distance Chebyshevienne entre ces deux points
+     */
     private static float chebyshevDistance(int x1, int y1, int x2, int y2) {
         return Math.max(Math.abs(y2 - y1), Math.abs(x2 - x1));
     }
 
     /**
-     * Algorithme A*
+     * Algorithme A* permettant de trouver un plus court chemin dans un Graph(Case) donné
      *
      * @param graph le graphe représentant la carte
      * @param start un entier représentant la case de départ
@@ -35,6 +60,7 @@ public class Application {
      * @param ncols le nombre de colonnes dans la carte
      * @param board l'affichage
      * @return une liste d'entiers correspondant au chemin
+     * @author Adaptée à partir du TP Partie B (Algorithmie Avancée)
      */
     private static LinkedList<Integer> AStar(Graph<Case> graph, int start, int end, int ncols, Board board) {
         HashSet<Integer> toVisit = new HashSet<Integer>();
@@ -68,13 +94,14 @@ public class Application {
         }
 
         LinkedList<Integer> path = new LinkedList<Integer>();
-        while (!path.contains(start)) {
-            path.addFirst(end);
-            if (graph.getVertex(end).getId() != graph.getVertex(start).getId())
-                if (graph.getVertex(end).getPrev() != null)
+        if (graph.getVertex(end).getPrev() != null) {
+            while (!path.contains(start)) {
+                path.addFirst(end);
+                if (graph.getVertex(end).getId() != graph.getVertex(start).getId())
                     end = graph.getVertex(end).getPrev().getId();
+            }
+            //path.addFirst(start);
         }
-        path.addFirst(start);
 
         board.addPath(graph, path);
         return path;
@@ -126,69 +153,66 @@ public class Application {
                         int source = line * ncols + col;
                         int dest;
                         float weight;
-                        if (line > 0) {
+                        if (graph.getVertex(source).getData() != Case.MUR) {
+                            if (line > 0) {
+                                dest = (line - 1) * ncols + col;
+                                weight = (graph.getVertex(source).getData().getTime() +
+                                        graph.getVertex(source).getData().getTime()) / 2.f;
+                                graph.addEdge(source, dest, weight);
+                            }
                             if (col > 0) {
-                                dest = (line - 1) * ncols + col - 1;
+                                dest = (line) * ncols + col - 1;
                                 weight = (graph.getVertex(source).getData().getTime() +
                                         graph.getVertex(dest).getData().getTime()) / 2.f;
                                 graph.addEdge(source, dest, weight);
-                                graph.addEdge(dest, source, weight);
                             }
-                            dest = (line - 1) * ncols + col;
-                            weight = (graph.getVertex(source).getData().getTime() +
-                                    graph.getVertex(source).getData().getTime()) / 2.f;
-                            graph.addEdge(source, dest, weight);
-                            graph.addEdge(dest, source, weight);
-                        }
-                        if (col > 0) {
-                            dest = (line) * ncols + col - 1;
-                            weight = (graph.getVertex(source).getData().getTime() +
-                                    graph.getVertex(dest).getData().getTime()) / 2.f;
-                            graph.addEdge(source, dest, weight);
-                            graph.addEdge(dest, source, weight);
                         }
                     }
                 }
 
-                int pixelSize = 40;
+                int pixelSize = 50;
                 Board board = new Board(graph, pixelSize, ncols, nlines, groundColor, startV, endV);
                 drawBoard(board, nlines, ncols, pixelSize);
                 board.repaint();
 
                 LinkedList<Integer> path = AStar(graph, startV, endV, ncols, board);
 
-                try {
-                    File fileOut = new File("src/up/mi/ng/aa/out.txt");
-                    if (!fileOut.exists()) {
-                        if (!fileOut.createNewFile())
-                            throw new IOException("Could not create the fileIn");
-                    }
-                    FileWriter fw = new FileWriter(fileOut.getAbsoluteFile());
-                    BufferedWriter bw = new BufferedWriter(fw);
-
-                    for (int i : path) {
-                        bw.write(String.valueOf(i));
-                        bw.write('\n');
-                    }
-                    bw.close();
-
-                } catch (IOException e) {
-                    e.printStackTrace();
+                File fileOut = new File("src/up/mi/ng/aa/out.txt");
+                if (!fileOut.exists()) {
+                    if (!fileOut.createNewFile())
+                        throw new IOException("Could not create the fileIn");
                 }
+                FileWriter fw = new FileWriter(fileOut.getAbsoluteFile());
+                BufferedWriter bw = new BufferedWriter(fw);
 
-                for (int i = 0; i < path.size(); ++i) {
-                    //TODO Chaque indice, avancer le feu
-                    for (int j = 0; j < graph.getNbVertex(); ++j) {
-                        if (graph.getVertex(j).getData() == Case.FEU) {
-                            if (j % ncols != 1)
-                                graph.getVertex()
-                        }
-                    }
-                    //TODO Si le feu se touche une case que le héros doit parcourir dans le futur / la case ou il est alors
-                    //TODO il a pas perdu
-                    //TODO Sinon le héros peut accédère à la fin avant le feu
+                for (int i : path) {
+                    bw.write(String.valueOf(i));
+                    bw.write('\n');
                 }
+                bw.close();
+
+                boolean escaped = true;
+                if (!path.isEmpty()) {
+                    for (int i = 0; i < path.size() - 1 && escaped; ++i) {
+                        for (int j = 0; j < graph.getNbVertex(); ++j)
+                            if (graph.getVertex(j).getData() == Case.FEU)
+                                for (Graph<Case>.Edge e : graph.getVertex(j).getAdjList())
+                                    e.getDestination().setData(Case.FLAMMESPROPAGEES);
+                        for (int j = 0; j < graph.getNbVertex(); ++j)
+                            if (graph.getVertex(j).getData() == Case.FLAMMESPROPAGEES)
+                                graph.getVertex(j).setData(Case.FEU);
+                        for (int j = i; j < path.size(); ++j)
+                            if (graph.getVertex(path.get(j)).getData() == Case.FEU)
+                                escaped = false;
+                    }
+                } else
+                    escaped = false;
+                if (escaped)
+                    System.out.println("Y");
+                else
+                    System.out.println("N");
             }
+
             bufferedReader.close();
         } catch (IOException e) {
             e.printStackTrace();

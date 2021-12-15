@@ -12,11 +12,19 @@ import java.io.Serial;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-//Classe pour gérer l'affichage
+/**
+ * Classe pour gérer l'affichage
+ * Pour le cours "IF05X040 Algorithmique avancée", de l'Université de Paris, 11/2020
+ * Pour le TP 7 - Partie B
+ * Originale modifiée et adaptée par Neil GAILLARD pour le Projet Labyrinthe
+ *
+ * @author Sylvain LOBRY
+ * @author Neil GAILLARD
+ * @version 2.0
+ */
 public class Board extends JComponent {
     @Serial
     private static final long serialVersionUID = 1L;
-    private Graph<Case> graph;
     private final int pixelSize;
     private final int ncols;
     private final int nlines;
@@ -24,6 +32,7 @@ public class Board extends JComponent {
     private final int start;
     private final int end;
     private final double max_distance;
+    private Graph<Case> graph;
     private int current;
     private LinkedList<Integer> path;
 
@@ -58,8 +67,8 @@ public class Board extends JComponent {
 
             if (colors.get(typeCase).equals("green"))
                 g2.setPaint(Color.green);
-            if (colors.get(typeCase).equals("black"))
-                g2.setPaint(Color.black);
+            if (colors.get(typeCase).equals("gray"))
+                g2.setPaint(Color.darkGray);
             if (colors.get(typeCase).equals("blue"))
                 g2.setPaint(Color.blue);
             if (colors.get(typeCase).equals("yellow"))
@@ -68,6 +77,8 @@ public class Board extends JComponent {
                 g2.setPaint(Color.pink);
             if (colors.get(typeCase).equals("red"))
                 g2.setPaint(Color.red);
+            if (colors.get(typeCase).equals("orange"))
+                g2.setPaint(Color.orange);
             g2.fill(new Rectangle2D.Double(j * this.pixelSize, i * this.pixelSize, this.pixelSize, this.pixelSize));
 
             if (num_case == this.current) {
@@ -134,14 +145,24 @@ public class Board extends JComponent {
         }
     }
 
-    //Mise à jour du graphe (à appeler avant de mettre à jour l'affichage)
+    /**
+     * Mise à jour du graphe (à appeler avant de mettre à jour l'affichage)
+     *
+     * @param graph   le graph à afficher
+     * @param current un sommet à mettre en évidence
+     */
     public void update(Graph<Case> graph, int current) {
         this.graph = graph;
         this.current = current;
         repaint();
     }
 
-    //Indiquer le chemin (pour affichage)
+    /**
+     * Indiquer un chemin sur un graph affiché
+     *
+     * @param graph le graph affiché
+     * @param path  le chemin à afficher
+     */
     public void addPath(Graph<Case> graph, LinkedList<Integer> path) {
         this.graph = graph;
         this.path = path;
