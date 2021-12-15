@@ -32,7 +32,7 @@ public class Application {
      * @author Proviens du TP Partie B (Algorithmie Avancée)
      */
     private static void drawBoard(Board board, int nlines, int ncols, int pixelSize) {
-        JFrame window = new JFrame("Plus court chemin");
+        JFrame window = new JFrame("S'échapper d'Ayutthaya");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setBounds(0, 0, ncols * pixelSize + 20, nlines * pixelSize + 40);
         window.getContentPane().add(board);
