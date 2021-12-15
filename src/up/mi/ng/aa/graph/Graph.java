@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * Classe représentant un graphe et ses différents composants
- * Ce graph est un graph non orienté, mais qui utilise deux arêtes orientérs de sens différents pour une connexion
+ * Ce graph est un graph non orienté, mais qui utilise deux arêtes orientées de sens différents pour une connexion
  * entre deux sommets.
  *
  * @param <T> le type de donné qui sera stocké dans les sommets du graph

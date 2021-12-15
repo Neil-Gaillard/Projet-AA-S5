@@ -1,7 +1,7 @@
 package up.mi.ng.aa.labyrinthe;
 
 /**
- * Enumération représentant la donnée stockée dans les cases du labyrinthe du projet.
+ * Enumeration représentant la donnée stockée dans les cases du labyrinthe du projet.
  *
  * @author Neil GAILLARD
  * @version 1.0
@@ -27,7 +27,7 @@ public enum Case {
 
     /**
      * Permet d'obtenir la valeur de l'énumération à partir d'un char pour la définition de données à partir de
-     * fichers textes
+     * fichiers textes
      *
      * @param ch le char à lire
      * @return la valeur de l'énumération correspondante à ce char

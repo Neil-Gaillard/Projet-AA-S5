@@ -40,12 +40,12 @@ public class Board extends JComponent {
      * Construit un Graph(Case) sous forme de tableau à afficher
      *
      * @param graph     le graph à afficher
-     * @param pixelSize la taille en pixel pour chaque somemt du graph
+     * @param pixelSize la taille en pixel pour chaque sommet du graph
      * @param ncols     le nombre de colonnes du graph
      * @param nlines    le nombre de lignes du graph
      * @param colors    hashmap représentant la couleur définie pour chaque type de sommet
      * @param start     sommet défini en tant que sommet de départ à mettre en évidence
-     * @param end       somemt défini en tant que sommet d'arrivée à mettre en évidence
+     * @param end       sommet défini en tant que sommet d'arrivée à mettre en évidence
      */
     public Board(Graph<Case> graph, int pixelSize, int ncols, int nlines, HashMap<Case, String> colors, int start, int end) {
         super();

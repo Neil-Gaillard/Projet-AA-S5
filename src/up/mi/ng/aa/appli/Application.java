@@ -40,13 +40,13 @@ public class Application {
     }
 
     /**
-     * Méthode permettant de calculer la distance Chebyshevienne entre deux points
+     * Méthode permettant de calculer la distance de Tchebychev entre deux points
      *
      * @param x1 la composante x du point de départ
      * @param y1 la composante y du point de départ
      * @param x2 la composante x du point d'arrivée
      * @param y2 la composante y du point d'arrivée
-     * @return la distance Chebyshevienne entre ces deux points
+     * @return la distance de Tchebychev entre ces deux points
      */
     private static float chebyshevDistance(int x1, int y1, int x2, int y2) {
         return Math.max(Math.abs(y2 - y1), Math.abs(x2 - x1));
