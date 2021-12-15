@@ -33,16 +33,24 @@ public enum Case {
      * @return la valeur de l'énumération correspondante à ce char
      */
     public static Case getValueFromChar(char ch) {
-        return switch (ch) {
-            case '.' -> LIBRE;
-            case '#' -> MUR;
-            case 'F' -> FEU;
-            case 'D' -> DEBUT;
-            case 'S' -> SORTIE;
-            case 'A' -> FLAMMESPROPAGEES;
-            case 'L' -> DEJAPARCOURU;
-            default -> null;
-        };
+        switch (ch) {
+            case '.':
+                return LIBRE;
+            case '#':
+                return MUR;
+            case 'F':
+                return FEU;
+            case 'D':
+                return DEBUT;
+            case 'S':
+                return SORTIE;
+            case 'A':
+                return FLAMMESPROPAGEES;
+            case 'L':
+                return DEJAPARCOURU;
+            default:
+                return null;
+        }
     }
 
     /**

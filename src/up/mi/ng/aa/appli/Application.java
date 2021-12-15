@@ -111,7 +111,7 @@ public class Application {
     }
 
     public static void main(String[] args) {
-        File fileIn = new File("src/up/mi/ng/aa/lab.txt");
+        File fileIn = new File("src/lab.txt");
 
         final HashMap<Case, String> groundColor = new HashMap<Case, String>();
         groundColor.put(Case.DEBUT, Case.DEBUT.getColor());
