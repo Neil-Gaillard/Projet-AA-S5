@@ -110,6 +110,11 @@ public class Application {
         return path;
     }
 
+    /**
+     * Main Method
+     *
+     * @param args args
+     */
     public static void main(String[] args) {
         File fileIn = new File("src/up/mi/ng/aa/lab.txt");
 
@@ -127,8 +132,6 @@ public class Application {
             String data = bufferedReader.readLine();
             final int NBINSTANCES = Integer.parseInt(data);
             for (int k = 0; k < NBINSTANCES; ++k) {
-
-
                 data = bufferedReader.readLine();
                 int nlines = Integer.parseInt(data.split(" ")[0]);
                 int ncols = Integer.parseInt(data.split(" ")[1]);
@@ -190,7 +193,7 @@ public class Application {
                         for (int j = 0; j < graph.getNbVertex(); ++j)
                             if (graph.getVertex(j).getData() == Case.FLAMMESPROPAGEES)
                                 graph.getVertex(j).setData(Case.FEU);
-                        for (int j = i; j < path.size(); ++j)
+                        for (int j = i; j < path.size() && escaped; ++j)
                             if (graph.getVertex(path.get(j)).getData() == Case.FEU)
                                 escaped = false;
                     }
