@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
-import java.io.Serial;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -23,8 +22,6 @@ import java.util.LinkedList;
  * @version 2.0
  */
 public class Board extends JComponent {
-    @Serial
-    private static final long serialVersionUID = 1L;
     private final int pixelSize;
     private final int ncols;
     private final int nlines;
