@@ -48,8 +48,8 @@ public class Application {
      * @param y2 la composante y du point d'arrivée
      * @return la distance de Tchebychev entre ces deux points
      */
-    private static float chebyshevDistance(int x1, int y1, int x2, int y2) {
-        return Math.max(Math.abs(y2 - y1), Math.abs(x2 - x1));
+    private static float manhattanDistance(int x1, int y1, int x2, int y2) {
+        return (Math.abs(x2 - x1) + Math.abs(y2 - y1));
     }
 
     /**
@@ -72,7 +72,7 @@ public class Application {
         graph.getVertex(start).setTimeFromSource(0.f);
 
         for (int i = 0; i < graph.getNbVertex(); ++i)
-            graph.getVertex(i).setHeuristic(Application.chebyshevDistance(i % ncols, i / ncols, end % ncols, end / ncols));
+            graph.getVertex(i).setHeuristic(Application.manhattanDistance(i % ncols, i / ncols, end % ncols, end / ncols));
 
         while (toVisit.contains(end)) {
             float costSoFar = Float.POSITIVE_INFINITY;
