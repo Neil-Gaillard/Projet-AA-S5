@@ -52,7 +52,6 @@ public class Graph<T> {
      * @param i l'indice du sommet à récupérer dans la liste des sommets du graph
      * @return le sommet à l'indice i dans la liste des sommets du graph
      */
-
     public Vertex getVertex(int i) {
         return this.vertices.get(i);
     }
@@ -73,7 +72,7 @@ public class Graph<T> {
         private final ArrayList<Edge> adjList;
         private final int id;
         private T data;
-        private float timeFromSource;
+        private float costSoFar;
         private float heuristic;
 
         private Vertex prev;
@@ -87,7 +86,7 @@ public class Graph<T> {
             this.id = nbVertex;
             this.prev = null;
 
-            this.timeFromSource = Float.POSITIVE_INFINITY;
+            this.costSoFar = Float.POSITIVE_INFINITY;
         }
 
         /**
@@ -124,18 +123,18 @@ public class Graph<T> {
          *
          * @return la valeur du chemin parcouru d'un sommet défini dans l'algorithme jusqu'à cette instance de sommet
          */
-        public float getTimeFromSource() {
-            return timeFromSource;
+        public float getCostSoFar() {
+            return costSoFar;
         }
 
         /**
          * Utilisée par des algorithmes, permet de mettre à jour le champ qui contiens la valeur du chemin parcouru
          * d'un sommet défini dans l'algorithme jusqu'à cette instance de sommet.
          *
-         * @param timeFromSource la nouvelle valeur
+         * @param costSoFar la nouvelle valeur
          */
-        public void setTimeFromSource(float timeFromSource) {
-            this.timeFromSource = timeFromSource;
+        public void setCostSoFar(float costSoFar) {
+            this.costSoFar = costSoFar;
         }
 
         /**
@@ -182,7 +181,7 @@ public class Graph<T> {
          * @return une référence vers la liste d'adjacence du sommet
          */
         public ArrayList<Edge> getAdjList() {
-            //Mauvaise pratique, autant mettre le champ en public,
+            //Mauvaise pratique, autant mettre le champ en public, ce qui est contre les règles de l'encapsulation,
             //mais utile pour ce projet figé et les algorithmes implémentés.
             return adjList;
         }

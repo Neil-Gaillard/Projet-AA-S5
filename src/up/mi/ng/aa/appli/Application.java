@@ -40,13 +40,13 @@ public class Application {
     }
 
     /**
-     * Méthode permettant de calculer la distance de Tchebychev entre deux points
+     * Méthode permettant de calculer la distance de Manhattan entre deux points
      *
      * @param x1 la composante x du point de départ
      * @param y1 la composante y du point de départ
      * @param x2 la composante x du point d'arrivée
      * @param y2 la composante y du point d'arrivée
-     * @return la distance de Tchebychev entre ces deux points
+     * @return la distance de Manhattan entre ces deux points
      */
     private static float manhattanDistance(int x1, int y1, int x2, int y2) {
         return (Math.abs(x2 - x1) + Math.abs(y2 - y1));
@@ -69,7 +69,7 @@ public class Application {
         HashSet<Integer> toVisit = new HashSet<Integer>();
         for (int i = 0; i < graph.getNbVertex(); ++i)
             toVisit.add(graph.getVertex(i).getId());
-        graph.getVertex(start).setTimeFromSource(0.f);
+        graph.getVertex(start).setCostSoFar(0.f);
 
         for (int i = 0; i < graph.getNbVertex(); ++i)
             graph.getVertex(i).setHeuristic(Application.manhattanDistance(i % ncols, i / ncols, end % ncols, end / ncols));
@@ -78,8 +78,8 @@ public class Application {
             float costSoFar = Float.POSITIVE_INFINITY;
             int current = -1;
             for (Integer i : toVisit) {
-                if (graph.getVertex(i).getTimeFromSource() + graph.getVertex(i).getHeuristic() <= costSoFar) {
-                    costSoFar = graph.getVertex(i).getTimeFromSource();
+                if (graph.getVertex(i).getCostSoFar() + graph.getVertex(i).getHeuristic() <= costSoFar) {
+                    costSoFar = graph.getVertex(i).getCostSoFar();
                     current = graph.getVertex(i).getId();
                 }
             }
@@ -88,8 +88,8 @@ public class Application {
 
             for (int i = 0; i < graph.getVertex(current).getAdjList().size(); i++) {
                 int to_try = graph.getVertex(current).getAdjList().get(i).getDestination().getId();
-                if (graph.getVertex(to_try).getTimeFromSource() > (costSoFar + graph.getVertex(current).getAdjList().get(i).getWeight())) {
-                    graph.getVertex(to_try).setTimeFromSource(costSoFar + graph.getVertex(current).getAdjList().get(i).getWeight());
+                if (graph.getVertex(to_try).getCostSoFar() > (costSoFar + graph.getVertex(current).getAdjList().get(i).getWeight())) {
+                    graph.getVertex(to_try).setCostSoFar(costSoFar + graph.getVertex(current).getAdjList().get(i).getWeight());
                     graph.getVertex(to_try).setPrev(graph.getVertex(current));
                 }
             }
